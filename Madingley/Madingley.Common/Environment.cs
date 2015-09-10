@@ -177,5 +177,30 @@ namespace Madingley.Common
                 this.CellEnvironment.GetHashCode() ^
                 this.FileNames.GetHashCode();
         }
+
+        /// <summary>
+        /// Determines whether the specified objects are equal - apart from the CellEnvironment
+        /// </summary>
+        /// <param name="obj">The object to compare with the current object.</param>
+        /// <returns>true if objects are both Environments and equivalent; otherwise, false.</returns>
+        public bool EqualsWithoutData(Object obj)
+        {
+            if (obj == null) return false;
+
+            var environmentObj = obj as Environment;
+            if ((Object)environmentObj == null) return false;
+
+            return
+                this.CellSize.Equals(environmentObj.CellSize) &&
+                this.BottomLatitude.Equals(environmentObj.BottomLatitude) &&
+                this.TopLatitude.Equals(environmentObj.TopLatitude) &&
+                this.LeftmostLongitude.Equals(environmentObj.LeftmostLongitude) &&
+                this.RightmostLongitude.Equals(environmentObj.RightmostLongitude) &&
+                this.Units.SequenceEqual(environmentObj.Units) &&
+                this.SpecificLocations.Equals(environmentObj.SpecificLocations) &&
+                this.FocusCells.SequenceEqual(environmentObj.FocusCells) &&
+                // this.CellEnvironment.SequenceEqual(environmentObj.CellEnvironment, cellEnvironmentComparer) && do not compare environment
+                this.FileNames.SequenceEqual(environmentObj.FileNames);
+        }
     }
 }

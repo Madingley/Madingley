@@ -13,7 +13,7 @@ namespace Madingley
         /// Initializes the ecosystem model
         /// </summary>
         /// <param name="mmi">An instance of the model initialisation class</param> 
-        public static void Load(Tuple<Madingley.Common.Environment, SortedList<string, EnviroData>> mmi)
+        public static void Load(Tuple<Madingley.Common.Environment, SortedList<string, EnviroData>> mmi, bool readData)
         {
             var e = mmi.Item1;
 
@@ -37,21 +37,24 @@ namespace Madingley
                 e.FocusCells = CellList;
             }
 
-            var cellList = e.FocusCells.Select(a => new UInt32[] { (uint)a.Item1, (uint)a.Item2 }).ToList();
+            if (readData)
+            {
+                var cellList = e.FocusCells.Select(a => new UInt32[] { (uint)a.Item1, (uint)a.Item2 }).ToList();
 
-            var EcosystemModelGrid = new ModelGrid((float)e.BottomLatitude, (float)e.LeftmostLongitude, (float)e.TopLatitude, (float)e.RightmostLongitude,
-                (float)e.CellSize, (float)e.CellSize, cellList, mmi.Item2,
-                e.SpecificLocations);
+                var EcosystemModelGrid = new ModelGrid((float)e.BottomLatitude, (float)e.LeftmostLongitude, (float)e.TopLatitude, (float)e.RightmostLongitude,
+                    (float)e.CellSize, (float)e.CellSize, cellList, mmi.Item2,
+                    e.SpecificLocations);
 
-            Func<Tuple<int, int>, IDictionary<string, double[]>> convertCellEnvironment =
-                cell =>
-                {
-                    var env = EcosystemModelGrid.GetCellEnvironment((uint)cell.Item1, (uint)cell.Item2);
+                Func<Tuple<int, int>, IDictionary<string, double[]>> convertCellEnvironment =
+                    cell =>
+                    {
+                        var env = EcosystemModelGrid.GetCellEnvironment((uint)cell.Item1, (uint)cell.Item2);
 
-                    return env.ToDictionary(kv => kv.Key, kv => kv.Value.ToArray());
-                };
+                        return env.ToDictionary(kv => kv.Key, kv => kv.Value.ToArray());
+                    };
 
-            e.CellEnvironment = e.FocusCells.Select(convertCellEnvironment).ToList();
+                e.CellEnvironment = e.FocusCells.Select(convertCellEnvironment).ToList();
+            }
         }
     }
 }

@@ -22,7 +22,7 @@ namespace Madingley.Test.Run
             Madingley.Test.Common.Environment.CreateFiles(pathToData, data.Terrestrial);
 
             var configuration = Madingley.Configuration.Loader.Load(pathToModelSetup);
-            var environment = Madingley.Environment.Loader.Load(pathToData, pathToModelSetup);
+            var environment = Madingley.Environment.Loader.Load(pathToData, pathToModelSetup, true);
 
             var progress = new ProgressReporter();
             var cancellationToken = CancellationToken.None;

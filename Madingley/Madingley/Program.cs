@@ -26,18 +26,31 @@ namespace Madingley
             var beginTime = DateTime.Now;
 
             var configuration = Madingley.Configuration.Loader.Load(modelSetupRoot);
-            var environment = (Common.Environment)null;
+
+            var useCache = false;
+            var cachedEnvironment = (Common.Environment)null;
 
             if (System.IO.File.Exists(environmentFileName))
             {
                 using (var reader = new System.IO.StreamReader(environmentFileName))
                 {
-                    environment = Madingley.Serialization.Environment.Deserialize(reader);
+                    cachedEnvironment = Madingley.Serialization.Environment.Deserialize(reader);
                 }
+
+                var partialEnvironment = Madingley.Environment.Loader.Load(environmentDataRoot, modelSetupRoot, false);
+
+                useCache = cachedEnvironment.EqualsWithoutData(partialEnvironment);
+            }
+
+            var environment = (Common.Environment)null;
+
+            if (useCache)
+            {
+                environment = cachedEnvironment;
             }
             else
             {
-                environment = Madingley.Environment.Loader.Load(environmentDataRoot, modelSetupRoot);
+                environment = Madingley.Environment.Loader.Load(environmentDataRoot, modelSetupRoot, true);
 
                 using (var writer = new System.IO.StreamWriter(environmentFileName))
                 {

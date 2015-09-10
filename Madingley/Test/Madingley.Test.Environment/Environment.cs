@@ -16,7 +16,7 @@ namespace Madingley.Test.Environment
             Madingley.Test.Common.Environment.CreateDirectories(environmentDataRoot);
             Madingley.Test.Common.Environment.CreateFiles(environmentDataRoot, true);
 
-            var actual = Madingley.Environment.Loader.Load(environmentDataRoot, modelSetupRoot);
+            var actual = Madingley.Environment.Loader.Load(environmentDataRoot, modelSetupRoot, true);
 
             Assert.AreEqual(100, actual.CellEnvironment.Count());
         }

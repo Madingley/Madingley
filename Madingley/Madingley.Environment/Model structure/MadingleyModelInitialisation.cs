@@ -19,7 +19,12 @@ namespace Madingley
         /// <param name="definitionsFilename">Definitions file name</param>
         /// <param name="environmentDataRoot">The path to folder which contains the data inputs</param>
         /// <param name="inputPath">The path to folder which contains the model inputs</param>
-        public static Tuple<Madingley.Common.Environment, SortedList<string, EnviroData>> Load(string simulationInitialisationFilename, string definitionsFilename, string environmentDataRoot, string inputPath)
+        public static Tuple<Madingley.Common.Environment, SortedList<string, EnviroData>> Load(
+            string simulationInitialisationFilename,
+            string definitionsFilename,
+            string environmentDataRoot,
+            string inputPath,
+            bool readData)
         {
             // Write to console
             Console.WriteLine("Initializing model...\n");
@@ -106,7 +111,7 @@ namespace Madingley
                             var fileName = System.IO.Path.Combine(inputPath, "Environmental Data Layer List", environmentalLayerFile);
                             e.FileNames.Add(fileName);
 
-                            EnviroStack = ReadEnvironmentalLayers(e, fileName, environmentDataRoot);
+                            EnviroStack = ReadEnvironmentalLayers(e, fileName, environmentDataRoot, readData);
                         }
                         break;
                 }
@@ -182,7 +187,11 @@ namespace Madingley
         /// <param name="e">Environment object.</param>
         /// <param name="inputEnvironmentalLayerFileName">The name of the file containing the list of environmental layers</param>
         /// <param name="environmentDataRoot">The path to folder which contains the data inputs</param>
-        public static SortedList<string, EnviroData> ReadEnvironmentalLayers(Madingley.Common.Environment e, string inputEnvironmentalLayerFileName, string environmentDataRoot)
+        public static SortedList<string, EnviroData> ReadEnvironmentalLayers(
+            Madingley.Common.Environment e,
+            string inputEnvironmentalLayerFileName,
+            string environmentDataRoot,
+            bool readData)
         {
             Console.WriteLine("Reading in environmental data:");
 
@@ -280,7 +289,14 @@ namespace Madingley
                     // Read in and store the environmental data
                     if (File.Exists(Filenames[ii]))
                     {
-                        EnviroStack.Add(LayerName[ii], new EnviroData(Filenames[ii], DatasetNames[ii], FileTypes[ii], Resolutions[ii], MethodUnits[ii]));
+                        if (readData)
+                        {
+                            EnviroStack.Add(LayerName[ii], new EnviroData(Filenames[ii], DatasetNames[ii], FileTypes[ii], Resolutions[ii], MethodUnits[ii]));
+                        }
+                        else
+                        {
+                            EnviroStack.Add(LayerName[ii], null);
+                        }
                     }
                     else
                     {
@@ -291,14 +307,23 @@ namespace Madingley
                 {
 
                     if (!EnviroStack.ContainsKey(LayerName[ii]))
-                        if (e.SpecificLocations)
+                    {
+                        if (readData)
                         {
-                            EnviroStack.Add(LayerName[ii], new EnviroData(DatasetNames[ii], Resolutions[ii], e.BottomLatitude, e.LeftmostLongitude, e.TopLatitude, e.RightmostLongitude, e.CellSize, e.FocusCells, EnvironmentalDataSource.ANY));
+                            if (e.SpecificLocations)
+                            {
+                                EnviroStack.Add(LayerName[ii], new EnviroData(DatasetNames[ii], Resolutions[ii], e.BottomLatitude, e.LeftmostLongitude, e.TopLatitude, e.RightmostLongitude, e.CellSize, e.FocusCells, EnvironmentalDataSource.ANY));
+                            }
+                            else
+                            {
+                                EnviroStack.Add(LayerName[ii], new EnviroData(DatasetNames[ii], Resolutions[ii], e.BottomLatitude, e.LeftmostLongitude, e.TopLatitude, e.RightmostLongitude, e.CellSize, EnvironmentalDataSource.ANY));
+                            }
                         }
                         else
                         {
-                            EnviroStack.Add(LayerName[ii], new EnviroData(DatasetNames[ii], Resolutions[ii], e.BottomLatitude, e.LeftmostLongitude, e.TopLatitude, e.RightmostLongitude, e.CellSize, EnvironmentalDataSource.ANY));
+                            EnviroStack.Add(LayerName[ii], null);
                         }
+                    }
                 }
             }
 

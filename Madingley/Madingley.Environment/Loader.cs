@@ -1,4 +1,5 @@
-﻿
+﻿using System.Linq;
+
 namespace Madingley.Environment
 {
     public static class Loader
@@ -10,11 +11,12 @@ namespace Madingley.Environment
 
         public static Madingley.Common.Environment Load(
             string environmentDataRoot,
-            string inputPath)
+            string inputPath,
+            bool readData)
         {
-            var mmi = MadingleyModelInitialisation.Load(simulationInitialisationFile, definitionsFilename, environmentDataRoot, inputPath);
+            var mmi = MadingleyModelInitialisation.Load(simulationInitialisationFile, definitionsFilename, environmentDataRoot, inputPath, readData);
 
-            MadingleyModel.Load(mmi);
+            MadingleyModel.Load(mmi, readData);
 
             return mmi.Item1;
         }
