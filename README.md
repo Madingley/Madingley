@@ -311,3 +311,7 @@ Running the Model
 
 The Madingley project is a simple command line application that loads the configuration, environment data, passes them to the model and stores the output.
 Select this project as the start-up project and run it to run the model.
+
+### LICENCE
+
+You can find license details in Licence.txt file provided with this project or online at https://github.com/Madingley/Madingley/blob/master/Licence.txt.
