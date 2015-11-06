@@ -1,5 +1,7 @@
-The Madingley Model
-===================
+Prototype refactored C# Madingley model
+------------------------------------
+
+<not under active development>
 
 This is the data, configuration and source code for the Madingley Model [http://www.madingleymodel.org/](http://www.madingleymodel.org/).
 
@@ -108,7 +110,7 @@ Ecological parameters file,EcologicalParameters.csv
 
 ### SimulationControlParameters.csv
 
-The file specifies most of the changeable information needed by the model to run. It should be modified depending on the experimental purpose of the simulation, along with its counterpart the ‘Scenarios’ file.
+The file specifies most of the changeable information needed by the model to run. It should be modified depending on the experimental purpose of the simulation, along with its counterpart the â€˜Scenariosâ€™ file.
 
 Parameter | Type | Comment
 --------- | ---- | -------
@@ -129,10 +131,10 @@ Extinction Threshold | number | The number of individuals remaining in a cohort 
 Maximum Number Of Cohorts | number | The maximum number of cohorts allowed within a single cell, after which the model merges the most similar cohorts into single larger approximations. Necessary for computational reasons: increasing the maximum number of cohorts reduces uncertainty and increases the power of the model at the cost of increased computational expense.
 Run Cells In Parallel | "yes"/"no" | Assigns different cells to different processor cores when running a simulation.
 Run Simulations In Parallel | "yes"/"no" | Assigns different simulations to different processor cores when running multiple simulations (either different scenarios or repeats of the same).
-Run Single Realm | "marine"/"terrestrial"/blank | Prevents the model from running both marine and terrestrial biomes in the same simulation. Input as ‘marine’ or ‘terrestrial’ for only marine or terrestrial realm respectively, leave blank to run both realms.
+Run Single Realm | "marine"/"terrestrial"/blank | Prevents the model from running both marine and terrestrial biomes in the same simulation. Input as â€˜marineâ€™ or â€˜terrestrialâ€™ for only marine or terrestrial realm respectively, leave blank to run both realms.
 Impact Cell Index | ranges/blank | This accepts a list of ranges separated with ";". Each range may be either a single number or a pair NN-MM, for example: ```2;3;5-7;13```
 Dispersal only | "yes"/"no" | Runs only the dispersal aspects of the model, ignoring ecological processes (rarely used for experimentation).
-Dispersal only type | "diffusion"/"advection"/"responsive"/blank | Specifies the method of dispersal allowed when ‘Dispersal Only’ is set to ‘yes’ (rarely used).
+Dispersal only type | "diffusion"/"advection"/"responsive"/blank | Specifies the method of dispersal allowed when â€˜Dispersal Onlyâ€™ is set to â€˜yesâ€™ (rarely used).
 
 Example:
 
@@ -273,7 +275,7 @@ FetchClimate,,,,frost,,FrostDays,Y,month,degC
 
 ### Initial Model State Setup/Scenarios.csv
 
-Is one of the files to be edited depending on the purpose of the experiment being run. This is where the scenarios to be simulated by the model are defined, and forms the counterpart to the ‘Ecosystem Model Initialisation’ file. Currently, it is used to define impact scenarios and repeated simulations.
+Is one of the files to be edited depending on the purpose of the experiment being run. This is where the scenarios to be simulated by the model are defined, and forms the counterpart to the â€˜Ecosystem Model Initialisationâ€™ file. Currently, it is used to define impact scenarios and repeated simulations.
 
 Column | Comment
 ------ | -------
@@ -281,7 +283,7 @@ label | Label this scenario
 npp | NPP settings, "no 0.0 0" for no NPP impacts.
 temperature | Temperature settings
 harvesting | Harvesting settings
-simulation number | Number of simulations to run. ‘0’ will mean that scenario is not run, while ‘10’ means the scenario will be repeated ten times. Each repeat will be different due to the randomness built into the initial model seeding (this can be turned off in the Initialisation File). Each repeated simulation has its own unique output file, which is denoted by an index number in the output filename.
+simulation number | Number of simulations to run. â€˜0â€™ will mean that scenario is not run, while â€˜10â€™ means the scenario will be repeated ten times. Each repeat will be different due to the randomness built into the initial model seeding (this can be turned off in the Initialisation File). Each repeated simulation has its own unique output file, which is denoted by an index number in the output filename.
 
 Example:
 
